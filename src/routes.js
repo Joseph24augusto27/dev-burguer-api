@@ -1,21 +1,25 @@
 import { Router } from 'express';
-import User from './app/models/User.js';
-import { v4 } from 'uuid';
+import UserController from './app/controllers/UserController.js';
+import SessionController from './app/controllers/SessionController.js';
+import ProductController from './app/controllers/ProductController.js';
+import multer from 'multer';
+import multerConfig from './config/multer.cjs';
 
 const routes = new Router();
 
-routes.get('/', async (req, res) => {
-  
-  const user = {
-    id: v4(),
-    name: 'Joseph',
-    email: 'Joseph@email.com',
-    password_hash: '123456',
-    admin: false,
-  };
-  await User.create(user);
+const upload = multer(multerConfig);
 
-  res.status(201).json(user);
-});
+routes.post('/users', UserController.store);
+routes.post('/session', SessionController.store);
+routes.post('/products', upload.single('file'), ProductController.store);
+routes.get('/products', ProductController.index);
 
 export default routes;
+
+/* Métodos HTTP ->
+
+POST -> CRIAR
+PUT/PATCH -> ATUALIZAR
+GET -> BUSCAR
+DELETE -> DELETAR
+*/
