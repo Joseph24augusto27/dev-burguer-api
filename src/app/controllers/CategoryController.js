@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
-import { request } from 'express';
-import Category from '../models/category.js';
+import Category from '../models/Category.js';
 
 class Categorycontroller {
   async store(request, response) {
@@ -80,7 +79,7 @@ class Categorycontroller {
     return response.status(201).json();
   }
 
-  async index(_request, response) {
+  async index(request, response) {
     const categories = await Category.findAll();
 
     console.log(request.userId);

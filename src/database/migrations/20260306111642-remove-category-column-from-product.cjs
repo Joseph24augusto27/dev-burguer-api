@@ -3,12 +3,16 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface) {
-    await queryInterface.removeColumn('products', 'category');
+    const tableDescription = await queryInterface.describeTable('products');
+
+    if (tableDescription.category) {
+      await queryInterface.removeColumn('products', 'category');
+    }
   },
 
   async down(queryInterface, Sequelize) {
     await queryInterface.addColumn('products', 'category', {
-      type: Sequelize.STRING, // Remova os parênteses () se não estiver passando tamanho
+      type: Sequelize.STRING,
       allowNull: true,
     });
   },
